@@ -15,4 +15,15 @@ contract CounterTest is Test {
         counter.increment();
         assertEq(counter.count(), 1);
     }
+
+    function testDec() public {
+        counter.increment();
+        counter.decrement();
+        assertEq(counter.count(), 0);
+    }
+
+    function testDecUnderflow() public {
+        vm.expectRevert(Counter.CounterAlreadyZero.selector);
+        counter.decrement();
+    }
 }
