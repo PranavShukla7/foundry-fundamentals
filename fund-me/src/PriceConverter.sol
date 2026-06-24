@@ -3,10 +3,16 @@ pragma solidity ^0.8.18;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-// Why is this a library and not abstract?
-// Why not an interface?
+/**
+ * @title PriceConverter
+ * @notice Library for converting ETH amounts to USD using Chainlink price feeds
+ * @dev Uses Chainlink Aggregator V3 interface for price data
+ */
 library PriceConverter {
-    // We could make this public, but then we'd have to deploy it
+    /**
+     * @notice Get the latest ETH price in USD
+     * @return The current ETH/USD price with 18 decimal places
+     */
     function getPrice() internal view returns (uint256) {
         // Sepolia ETH / USD Address
         // https://docs.chain.link/data-feeds/price-feeds/addresses
@@ -18,7 +24,11 @@ library PriceConverter {
         return uint256(answer * 10000000000);
     }
 
-    // 1000000000
+    /**
+     * @notice Convert ETH amount to USD equivalent
+     * @param ethAmount The amount of ETH to convert
+     * @return ethAmountInUsd The ETH amount converted to USD
+     */
     function getConversionRate(
         uint256 ethAmount
     ) internal view returns (uint256) {
