@@ -11,11 +11,11 @@ contract FundMe {
     using PriceConverter for uint256;
 
     // State variables
-    mapping(address => uint256) public s_addressToAmountFunded;
-    address[] public s_funders;
+    mapping(address => uint256) private s_addressToAmountFunded;
+    address[] private s_funders;
 
     // Constants and immutable variables
-    address public immutable i_owner;
+    address private immutable i_owner;
     uint256 public constant MINIMUM_USD = 5e18;
     AggregatorV3Interface private s_priceFeed;
 
@@ -77,7 +77,19 @@ contract FundMe {
     receive() external payable {
         fund();
     }
-}
+    /**
+    * View / Pure functions (Getters)
+    */
+    function getAddressToAmountFunded(address fundingAddress) public view returns (uint256) {
+        return s_addressToAmountFunded[fundingAddress];
+    }
+    function getFunder(uint256 index) public view returns (address) {
+        return s_funders[index];
+    }
+    function getOwner() public view returns (address) {
+        return i_owner;
+    }
+}    
 
 // Concepts we didn't cover yet (will cover in later sections)
 // 1. Enum
