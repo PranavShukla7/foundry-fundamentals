@@ -41,6 +41,17 @@ contract FundMe {
         _;
     }
 
+    function cheaperWithdraw() public onlyOwner {
+        address[] memory funders = s_funders;
+        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
+            address funder = funders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
+        }
+        s_funders = new address[](0);
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "Call failed");
+    }
+
     function withdraw() public onlyOwner {
         for (uint256 funderIndex = 0; funderIndex < s_funders.length; funderIndex++) {
             address funder = s_funders[funderIndex];
